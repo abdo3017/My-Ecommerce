@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using System.IO;
 
 namespace BusinessLogic.Utils
@@ -8,15 +9,14 @@ namespace BusinessLogic.Utils
     {
 
 
-        private readonly Microsoft.AspNetCore.Hosting.IWebHost webHostEnvironment;
-        public ImageHandler(IWebHost webhost)
+        private readonly IHostingEnvironment webHostEnvironment;
+        public ImageHandler(IHostingEnvironment webhost)
         {
             webHostEnvironment = webhost;
-
         }
         public void RemoveImage(string imgPath)
         {
-            string image = Path.Combine(webHostEnvironment., "images", imgPath);
+            string image = Path.Combine(webHostEnvironment.WebRootPath, "images", imgPath);
             FileInfo fi = new FileInfo(image);
             if (fi != null)
             {
@@ -25,22 +25,20 @@ namespace BusinessLogic.Utils
             }
         }
 
-        public string UploadImage(string product)
+        public string UploadImage(IFormFile imageFile)
         {
             string uniqueFileName = null;
 
-            //if (product.ImageFile != null)
-            //{
-            //    string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
-            //    uniqueFileName = Guid.NewGuid().ToString() + "_" + product.ImageFile.FileName;
-            //    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-            //    using (var fileStream = new FileStream(filePath, FileMode.Create))
-            //    {
-            //        product.ImageFile.CopyTo(fileStream);
-
-            //    }
-
-            //}
+            if (imageFile != null)
+            {
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    imageFile.CopyTo(fileStream);
+                }
+            }
 
             return uniqueFileName;
         }

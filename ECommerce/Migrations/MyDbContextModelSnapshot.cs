@@ -121,6 +121,9 @@ namespace ECommerce.Migrations
                     b.Property<int>("IdProduct")
                         .HasColumnType("int");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id", "IdProduct");
 
                     b.HasIndex("IdProduct");
@@ -150,6 +153,9 @@ namespace ECommerce.Migrations
 
                     b.Property<int>("IdProduct")
                         .HasColumnType("int");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id", "IdProduct");
 
@@ -215,6 +221,9 @@ namespace ECommerce.Migrations
 
                     b.Property<int>("IdProduct")
                         .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id", "IdProduct");
 

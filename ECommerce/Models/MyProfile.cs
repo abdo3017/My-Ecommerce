@@ -10,6 +10,7 @@ namespace ECommerce.Models
 		{
 			CreateMap<UserViewModel, User>();
 			CreateMap<LoginViewModel, User>();
+			CreateMap<TypeViewModel, Type>();
 
 		}
 	}

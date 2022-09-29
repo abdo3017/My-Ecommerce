@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 namespace BusinessLogic.Services
 {
 
-    public abstract class GenericRepository<T> : IBaseRepository<T> where T : class
+    public class GenericRepository<T> : IBaseRepository<T> where T : class
     {
         private readonly MyDbContext Context;
         public GenericRepository(MyDbContext _Context)
@@ -16,14 +16,14 @@ namespace BusinessLogic.Services
         }
 
 
-        public virtual T Add(T entity)
+        public T Add(T entity)
         {
             return Context
                 .Add(entity)
                 .Entity;
         }
 
-        public virtual IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
+        public IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
         {
           
             return Context.Set<T>()
@@ -31,18 +31,18 @@ namespace BusinessLogic.Services
                 .Where(predicate).ToList();
         }
 
-        public virtual T GetById(int id)
+        public T GetById(int id)
         {
             return Context.Find<T>(id);
         }
 
-        public virtual IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll()
         {
             return Context.Set<T>()
                 .ToList();
         }
 
-        public virtual T Update(T entity)
+        public T Update(T entity)
         {
 
             return Context.Update(entity)
@@ -54,7 +54,7 @@ namespace BusinessLogic.Services
             Context.SaveChanges();
         }
 
-        public virtual T Delete(T entity)
+        public T Delete(T entity)
         {
             return Context.Remove(entity)
                .Entity;

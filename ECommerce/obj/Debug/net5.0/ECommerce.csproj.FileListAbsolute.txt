@@ -162,3 +162,5 @@ C:\Users\Abdelrahman\source\repos\ECommerce\ECommerce\bin\Debug\net5.0\Microsoft
 C:\Users\Abdelrahman\source\repos\ECommerce\ECommerce\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
 C:\Users\Abdelrahman\source\repos\ECommerce\ECommerce\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
 C:\Users\Abdelrahman\source\repos\ECommerce\ECommerce\obj\Debug\net5.0\Razor\Views\Account\LogIn.cshtml.g.cs
+C:\Users\Abdelrahman\source\repos\ECommerce\ECommerce\obj\Debug\net5.0\Razor\Views\Admin\CreateType.cshtml.g.cs
+C:\Users\Abdelrahman\source\repos\ECommerce\ECommerce\obj\Debug\net5.0\Razor\Views\Admin\CreateProduct.cshtml.g.cs
