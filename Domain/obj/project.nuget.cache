@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "PB/r4A6ZIpammtwMxMV8JqMvvRtBX4FaJYsf682IH3gN1iHjagbqmQKXdkAZMbWrrh7WreRCWdoQzcO05qQWwA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Abdelrahman\\source\\repos\\ECommerce\\Domain\\Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Abdelrahman\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
+    "C:\\Users\\Abdelrahman\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512"
+  ],
+  "logs": []
+}
