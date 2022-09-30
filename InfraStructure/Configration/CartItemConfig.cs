@@ -16,12 +16,12 @@ namespace InfraStructure.Configration
             //relation
             builder.HasKey(b => b.Id);
             builder.HasOne(c => c.User)
-            .WithMany(e => e.CartItems);
+            .WithMany(e => e.CartItems).HasForeignKey(e=>e.UserId);
 
             builder
             .HasOne(c => c.Product)
             .WithMany(e => e.CartItems)
-            .HasForeignKey(c => c.IdProduct);
+            .HasForeignKey(c => c.ProductId);
 
 
         }

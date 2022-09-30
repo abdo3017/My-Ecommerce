@@ -7,16 +7,16 @@ using System.Linq.Expressions;
 namespace BusinessLogic.Services
 {
 
-    public class GenericRepository<T> : IBaseRepository<T> where T : class
+    public abstract class GenericRepository<T> : IBaseRepository<T> where T : class
     {
-        private readonly MyDbContext Context;
+        public readonly MyDbContext Context;
         public GenericRepository(MyDbContext _Context)
         {
             Context = _Context;
         }
 
 
-        public T Add(T entity)
+        public virtual T Add(T entity)
         {
             return Context
                 .Add(entity)

@@ -164,3 +164,6 @@ C:\Users\Abdelrahman\source\repos\ECommerce\ECommerce\bin\Debug\net5.0\System.Ru
 C:\Users\Abdelrahman\source\repos\ECommerce\ECommerce\obj\Debug\net5.0\Razor\Views\Account\LogIn.cshtml.g.cs
 C:\Users\Abdelrahman\source\repos\ECommerce\ECommerce\obj\Debug\net5.0\Razor\Views\Admin\CreateType.cshtml.g.cs
 C:\Users\Abdelrahman\source\repos\ECommerce\ECommerce\obj\Debug\net5.0\Razor\Views\Admin\CreateProduct.cshtml.g.cs
+C:\Users\Abdelrahman\source\repos\ECommerce\ECommerce\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\Abdelrahman\source\repos\ECommerce\ECommerce\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\Abdelrahman\source\repos\ECommerce\ECommerce\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll

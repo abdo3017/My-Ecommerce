@@ -18,8 +18,11 @@ namespace InfraStructure.Configration
             builder.HasKey(b => b.Id);
             builder.HasMany(c => c.Products)
             .WithOne(e => e.Type);
+			builder.HasOne(c => c.Category)
+			.WithMany(e => e.Types)
+			.HasForeignKey(c => c.CategoryId);
 
 
-        }
+		}
     }
 }

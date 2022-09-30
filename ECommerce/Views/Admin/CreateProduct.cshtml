@@ -1,8 +1,6 @@
 ﻿@model ECommerce.ViewModel.ProductViewModel
-
 @{
 	ViewData["Title"] = "CreateProduct";
-	var d = new List<string>();
 }
 
 <h1>CreateProduct</h1>
@@ -33,65 +31,56 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label">Category </label>
-				<select asp-for="IdCategory" class="form-control" asp-items="ViewBag.categories">
-					<option>--categoris--</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<label class="control-label">Brand </label>
-				<select asp-for="IdBrand" class="form-control" asp-items="ViewBag.brands">
-					<option>--brands--</option>
-				</select>
+				<select id="CatigoryList" asp-for="IdCategory" class="form-control" asp-items="ViewBag.categories"></select>
+				<span asp-validation-for="IdCategory" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label class="control-label">Type </label>
-				<select asp-for="IdType" class="form-control" asp-items="ViewBag.types">
-					<option>--types--</option>
+				<select id="TypeList" asp-for="IdType" class="form-control"></select>
+				<span asp-validation-for="IdType" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Brand </label>
+				<select asp-for="Brand" class="form-control">
+					<option value="ZARA">ZARA</option>
+					<option value="Nike">Nike</option>
+					<option value="H&M">H&M</option>
 				</select>
+				<span asp-validation-for="Brand" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label class="control-label">add colors</label>
-				<input id="product-color" class="form-control" />
-				<span class="text-danger"></span>
-				<button onclick="addcolor()" id="add-product-color" class="btn btn-primary" type="button">add color</button>
+				<label class="control-label">add color</label>
+				<select asp-for="Colors" class="form-control" multiple="multiple">
+					<option value="Red">Red</option>
+					<option value="Green">Green</option>
+					<option value="Yellow">Yellow</option>
+					<option value="Blue">Blue</option>
+					<option value="Black">Black</option>
+					<option value="White">White</option>
+				</select>
+				<span asp-validation-for="Colors" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label class="control-label">add colors</label>
-				<input id="product-color" class="form-control" />
-				<span class="text-danger"></span>
-				<button onclick="addcolor()" id="add-product-color" class="btn btn-primary" type="button">add color</button>
+				<label class="control-label">add Size</label>
+				<select asp-for="Sizes" class="form-control" multiple>
+					<option value="S">S</option>
+					<option value="M">M</option>
+					<option value="L">L</option>
+					<option value="XL">XL</option>
+					<option value="XXL">XXL</option>
+				</select>
+				<span asp-validation-for="Sizes" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label class="control-label">add colors</label>
-				<input id="product-color" class="form-control" />
-				<span class="text-danger"></span>
-				<button onclick="addcolor()" id="add-product-color" class="btn btn-primary" type="button">add color</button>
-			</div>
-			<div class="form-group">
-				<label asp-for="ImageFile" class="control-label"></label>
+				<label asp-for="File" class="control-label"></label>
 				<div class="custom-file">
-					<input asp-for="ImageFile" class="custom-file-input" id="productImage"
+					<input asp-for="File" class="custom-file-input" id="productImage"
 						   onchange="document.getElementById('FrontImage').src= window.URL.createObjectURL(this.files[0])" />
 					<label class="custom-file-label" for="productImage">Choose file</label>
 				</div>
-				<span asp-validation-for="ImageFile" class="text-danger"></span>
+				<span asp-validation-for="File" class="text-danger"></span>
 				<img id="FrontImage" src="" alt="Product Image" width="150" height="150" style="border:1px;margin-top:20px;margin-left:120px;" />
 			</div>
-			@*<div class="form-group">
-			<label asp-for="IdBrand" class="control-label"></label>
-			<input asp-for="IdBrand" class="form-control" />
-			<span asp-validation-for="IdBrand" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-			<label asp-for="IdType" class="control-label"></label>
-			<input asp-for="IdType" class="form-control" />
-			<span asp-validation-for="IdType" class="text-danger"></span>
-			</div>
-			<div class="form-group" hidden="hidden">
-			<label asp-for="IdCategory" class="control-label"></label>
-			<input asp-for="IdCategory" class="form-control" />
-			<span asp-validation-for="IdCategory" class="text-danger"></span>
-			</div>*@
 			<div class="form-group">
 				<input type="submit" value="Create" class="btn btn-primary" />
 			</div>
@@ -107,18 +96,36 @@
 	@{
 		await Html.RenderPartialAsync("_ValidationScriptsPartial");
 	}
-	}
+
 	<script type="text/javascript">
+
+		$("#CatigoryList").change(function () {
+
+			var CategoryId = $("#CatigoryList option:selected").val();
+			$("#TypeList").empty();
+			$.ajax({
+				type: "POST",
+				url: "/Admin/GetTypeDataByCategoryId",
+				data: { categoryId: CategoryId },
+				success: function(res) {
+					console.log(res);
+					$.each(res, function(i, e) {
+						$("#TypeList").append("<option value='" + e.Id + "'>" + e.Name + "</option>");
+					});
+				}
+
+			});
+
+
+		});
+
+
 		$(".custom-file-input").on("change", function() {
+
 			var fileName = $(this).val().split("\\").pop();
 			console.log(fileName);
 			$(this).siblings(".custom-file-label").addClass("selected").html(fileName);
 		});
-			function add() {
-				var colorname;
-				colorname = String(document.getElementById("first").value);
-                //d.Add("");
-                //Model.Colors=ICollection<>;
-                return colorname;
-			}
 	</script>
+
+				}

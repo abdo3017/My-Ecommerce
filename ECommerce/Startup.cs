@@ -1,4 +1,5 @@
 using BusinessLogic.Services;
+using BusinessLogic.Utils;
 using ECommerce.Models;
 using InfraStructure.Database;
 using InfraStructure.Entity;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,20 +33,22 @@ namespace ECommerce
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson(opt => {
+                opt.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            }); ;
 
             services.AddDbContext<MyDbContext>(
             option => option.UseSqlServer(Configuration.GetConnectionString("con"),b => b.MigrationsAssembly("ECommerce"))
             .LogTo(s => Console.WriteLine(s)));
+            services.AddScoped<IImageHandler, ImageHandler>();
+            services.AddScoped<GenericRepository<User>,UserRepository>();
+            services.AddScoped<GenericRepository<InfraStructure.Entity.Type>,TypeRepository>();
+            services.AddScoped<GenericRepository<Category>,CategoryRepository>();
+            services.AddScoped<GenericRepository<Product>,ProductRepository>();
+            services.AddScoped<ProductRepository>();
 
-            services.AddScoped<GenericRepository<User>>();
-            services.AddScoped<GenericRepository<InfraStructure.Entity.Type>>();
-            services.AddScoped<GenericRepository<Category>>();
-            services.AddScoped<GenericRepository<Brand>>();
-            services.AddScoped<GenericRepository<Product>>();
-            services.AddScoped<GenericRepository<Color>>();
-            services.AddScoped<GenericRepository<Size>>();
-            services.AddScoped<GenericRepository<Image>>();
+            services.AddScoped<GenericRepository<Color>,ColorRepository>();
+            services.AddScoped<GenericRepository<Size>,SizeRepository>();
             services.AddScoped<AccountRepository>();
 
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<MyDbContext>();

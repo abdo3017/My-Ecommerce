@@ -13,9 +13,8 @@ namespace InfraStructure.Entity
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public int ItemCount { get; set; }
 
         public ICollection<Product> Products { get; set; }
-        public ICollection<CategoryType> CategoryTypes { get; set; }
+        public ICollection<Type> Types { get; set; }
     }
 }

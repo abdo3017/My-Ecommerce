@@ -19,38 +19,6 @@ namespace ECommerce.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("InfraStructure.Entity.Brand", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Brands");
-                });
-
-            modelBuilder.Entity("InfraStructure.Entity.BrandType", b =>
-                {
-                    b.Property<int>("IdType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdBrand")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdType", "IdBrand");
-
-                    b.HasIndex("IdBrand");
-
-                    b.ToTable("BrandTypes");
-                });
-
             modelBuilder.Entity("InfraStructure.Entity.CartItem", b =>
                 {
                     b.Property<int>("Id")
@@ -58,11 +26,8 @@ namespace ECommerce.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("IdProduct")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
-
-                    b.Property<string>("IdUser")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -72,7 +37,7 @@ namespace ECommerce.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdProduct");
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserId");
 
@@ -86,9 +51,6 @@ namespace ECommerce.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ItemCount")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -96,21 +58,6 @@ namespace ECommerce.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categorys");
-                });
-
-            modelBuilder.Entity("InfraStructure.Entity.CategoryType", b =>
-                {
-                    b.Property<int>("IdType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdCategory")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdType", "IdCategory");
-
-                    b.HasIndex("IdCategory");
-
-                    b.ToTable("CategoryTypes");
                 });
 
             modelBuilder.Entity("InfraStructure.Entity.Color", b =>
@@ -146,24 +93,6 @@ namespace ECommerce.Migrations
                     b.ToTable("FavouriteProducts");
                 });
 
-            modelBuilder.Entity("InfraStructure.Entity.Image", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdProduct")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Path")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id", "IdProduct");
-
-                    b.HasIndex("IdProduct");
-
-                    b.ToTable("Images");
-                });
-
             modelBuilder.Entity("InfraStructure.Entity.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -171,23 +100,17 @@ namespace ECommerce.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BrandId")
-                        .HasColumnType("int");
+                    b.Property<string>("Brand")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IdBrand")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdCategory")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdType")
-                        .HasColumnType("int");
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -200,12 +123,10 @@ namespace ECommerce.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TypeId")
+                    b.Property<int>("TypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BrandId");
 
                     b.HasIndex("CategoryId");
 
@@ -239,7 +160,7 @@ namespace ECommerce.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ItemCount")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -248,6 +169,8 @@ namespace ECommerce.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Types");
                 });
@@ -475,30 +398,11 @@ namespace ECommerce.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("InfraStructure.Entity.BrandType", b =>
-                {
-                    b.HasOne("InfraStructure.Entity.Brand", "Brand")
-                        .WithMany("BrandTypes")
-                        .HasForeignKey("IdBrand")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("InfraStructure.Entity.Type", "Type")
-                        .WithMany("BrandTypes")
-                        .HasForeignKey("IdType")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Brand");
-
-                    b.Navigation("Type");
-                });
-
             modelBuilder.Entity("InfraStructure.Entity.CartItem", b =>
                 {
                     b.HasOne("InfraStructure.Entity.Product", "Product")
                         .WithMany("CartItems")
-                        .HasForeignKey("IdProduct")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -509,25 +413,6 @@ namespace ECommerce.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("InfraStructure.Entity.CategoryType", b =>
-                {
-                    b.HasOne("InfraStructure.Entity.Category", "Category")
-                        .WithMany("CategoryTypes")
-                        .HasForeignKey("IdCategory")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("InfraStructure.Entity.Type", "Type")
-                        .WithMany("CategoryTypes")
-                        .HasForeignKey("IdType")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("InfraStructure.Entity.Color", b =>
@@ -560,32 +445,19 @@ namespace ECommerce.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("InfraStructure.Entity.Image", b =>
+            modelBuilder.Entity("InfraStructure.Entity.Product", b =>
                 {
-                    b.HasOne("InfraStructure.Entity.Product", "Product")
-                        .WithMany("Images")
-                        .HasForeignKey("IdProduct")
+                    b.HasOne("InfraStructure.Entity.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("InfraStructure.Entity.Product", b =>
-                {
-                    b.HasOne("InfraStructure.Entity.Brand", "Brand")
-                        .WithMany("Products")
-                        .HasForeignKey("BrandId");
-
-                    b.HasOne("InfraStructure.Entity.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId");
-
                     b.HasOne("InfraStructure.Entity.Type", "Type")
                         .WithMany("Products")
-                        .HasForeignKey("TypeId");
-
-                    b.Navigation("Brand");
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
 
@@ -601,6 +473,15 @@ namespace ECommerce.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("InfraStructure.Entity.Type", b =>
+                {
+                    b.HasOne("InfraStructure.Entity.Category", "Category")
+                        .WithMany("Types")
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("InfraStructure.Entity.User", b =>
@@ -665,18 +546,11 @@ namespace ECommerce.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("InfraStructure.Entity.Brand", b =>
-                {
-                    b.Navigation("BrandTypes");
-
-                    b.Navigation("Products");
-                });
-
             modelBuilder.Entity("InfraStructure.Entity.Category", b =>
                 {
-                    b.Navigation("CategoryTypes");
-
                     b.Navigation("Products");
+
+                    b.Navigation("Types");
                 });
 
             modelBuilder.Entity("InfraStructure.Entity.Product", b =>
@@ -687,17 +561,11 @@ namespace ECommerce.Migrations
 
                     b.Navigation("FavouriteProducts");
 
-                    b.Navigation("Images");
-
                     b.Navigation("Sizes");
                 });
 
             modelBuilder.Entity("InfraStructure.Entity.Type", b =>
                 {
-                    b.Navigation("BrandTypes");
-
-                    b.Navigation("CategoryTypes");
-
                     b.Navigation("Products");
                 });
 
