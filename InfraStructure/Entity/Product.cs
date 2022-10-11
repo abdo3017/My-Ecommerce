@@ -19,18 +19,14 @@ namespace InfraStructure.Entity
         public int Quantity { get; set; }
         public ICollection<Color> Colors { get; set; }
         public ICollection<Size> Sizes { get; set; }
-
        public string Brand { get; set; }
         [ForeignKey("Type")]
         public int TypeId { get; set; }
         public Type Type { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-
         public string Image { get; set; }
-
         public ICollection<FavouriteProduct> FavouriteProducts { get; set; }
-
         public ICollection<CartItem> CartItems { get; set; }
 
     }

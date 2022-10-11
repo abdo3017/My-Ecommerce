@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ECommerce.Migrations
 {
-    public partial class init : Migration
+    public partial class first : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,44 +47,18 @@ namespace ECommerce.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Brands",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Brands", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Categorys",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ItemCount = table.Column<int>(type: "int", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categorys", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Types",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    ItemCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Types", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -216,49 +190,21 @@ namespace ECommerce.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BrandTypes",
+                name: "Types",
                 columns: table => new
                 {
-                    IdBrand = table.Column<int>(type: "int", nullable: false),
-                    IdType = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BrandTypes", x => new { x.IdType, x.IdBrand });
+                    table.PrimaryKey("PK_Types", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BrandTypes_Brands_IdBrand",
-                        column: x => x.IdBrand,
-                        principalTable: "Brands",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BrandTypes_Types_IdType",
-                        column: x => x.IdType,
-                        principalTable: "Types",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CategoryTypes",
-                columns: table => new
-                {
-                    IdCategory = table.Column<int>(type: "int", nullable: false),
-                    IdType = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CategoryTypes", x => new { x.IdType, x.IdCategory });
-                    table.ForeignKey(
-                        name: "FK_CategoryTypes_Categorys_IdCategory",
-                        column: x => x.IdCategory,
+                        name: "FK_Types_Categorys_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "Categorys",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CategoryTypes_Types_IdType",
-                        column: x => x.IdType,
-                        principalTable: "Types",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -273,34 +219,25 @@ namespace ECommerce.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    IdBrand = table.Column<int>(type: "int", nullable: false),
-                    BrandId = table.Column<int>(type: "int", nullable: true),
-                    IdType = table.Column<int>(type: "int", nullable: false),
-                    TypeId = table.Column<int>(type: "int", nullable: true),
-                    IdCategory = table.Column<int>(type: "int", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: true)
+                    Brand = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TypeId = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Brands_BrandId",
-                        column: x => x.BrandId,
-                        principalTable: "Brands",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Products_Categorys_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categorys",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Products_Types_TypeId",
                         column: x => x.TypeId,
                         principalTable: "Types",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -310,16 +247,15 @@ namespace ECommerce.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    IdProduct = table.Column<int>(type: "int", nullable: false),
-                    IdUser = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CartItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CartItems_Products_IdProduct",
-                        column: x => x.IdProduct,
+                        name: "FK_CartItems_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -328,15 +264,17 @@ namespace ECommerce.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Colors",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    IdProduct = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdProduct = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -374,29 +312,13 @@ namespace ECommerce.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Images",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    IdProduct = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Images", x => new { x.Id, x.IdProduct });
-                    table.ForeignKey(
-                        name: "FK_Images_Products_IdProduct",
-                        column: x => x.IdProduct,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Sizes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    IdProduct = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdProduct = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -449,24 +371,14 @@ namespace ECommerce.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BrandTypes_IdBrand",
-                table: "BrandTypes",
-                column: "IdBrand");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CartItems_IdProduct",
+                name: "IX_CartItems_ProductId",
                 table: "CartItems",
-                column: "IdProduct");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CartItems_UserId",
                 table: "CartItems",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CategoryTypes_IdCategory",
-                table: "CategoryTypes",
-                column: "IdCategory");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Colors_IdProduct",
@@ -477,16 +389,6 @@ namespace ECommerce.Migrations
                 name: "IX_FavouriteProducts_IdUser",
                 table: "FavouriteProducts",
                 column: "IdUser");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Images_IdProduct",
-                table: "Images",
-                column: "IdProduct");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_BrandId",
-                table: "Products",
-                column: "BrandId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
@@ -502,6 +404,11 @@ namespace ECommerce.Migrations
                 name: "IX_Sizes_IdProduct",
                 table: "Sizes",
                 column: "IdProduct");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Types_CategoryId",
+                table: "Types",
+                column: "CategoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -522,22 +429,13 @@ namespace ECommerce.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "BrandTypes");
-
-            migrationBuilder.DropTable(
                 name: "CartItems");
-
-            migrationBuilder.DropTable(
-                name: "CategoryTypes");
 
             migrationBuilder.DropTable(
                 name: "Colors");
 
             migrationBuilder.DropTable(
                 name: "FavouriteProducts");
-
-            migrationBuilder.DropTable(
-                name: "Images");
 
             migrationBuilder.DropTable(
                 name: "Sizes");
@@ -555,13 +453,10 @@ namespace ECommerce.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Brands");
+                name: "Types");
 
             migrationBuilder.DropTable(
                 name: "Categorys");
-
-            migrationBuilder.DropTable(
-                name: "Types");
         }
     }
 }

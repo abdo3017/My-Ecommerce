@@ -17,12 +17,16 @@ namespace InfraStructure.Configration
             //relation
             builder.HasKey(b => b.Id);
             builder.HasMany(c => c.Products)
-            .WithOne(e => e.Type);
-			builder.HasOne(c => c.Category)
+            .WithOne(e => e.Type)
+            .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(c => c.Category)
 			.WithMany(e => e.Types)
-			.HasForeignKey(c => c.CategoryId);
+			.HasForeignKey(c => c.CategoryId)
+            .OnDelete(DeleteBehavior.Cascade);
 
 
-		}
+
+        }
     }
 }

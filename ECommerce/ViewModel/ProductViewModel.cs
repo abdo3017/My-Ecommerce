@@ -16,15 +16,17 @@ namespace ECommerce.ViewModel
         public double Price { get; set; }
         [Required]
         public int Quantity { get; set; }
-		[Required]
-        public ICollection<string> Colors { get; set; }
-		[Required]
-        public ICollection<string> Sizes { get; set; }
-
+        [Required]
         public string Brand { get; set; }
-        public int IdType { get; set; }
-        public int IdCategory { get; set; }
-		[Ignore]
+        public int TypeId { get; set; }
+        public int CategoryId { get; set; }
+        public string Image { get; set; }
+        [Ignore]
+		[Required]
+        public ICollection<string> MyColor { get; set; }
+		[Required]
+        [Ignore]
+        public ICollection<string> MySize{ get; set; }
         [Required,Display(Name = "Upload Image")]
         public IFormFile File { get; set; }
     }

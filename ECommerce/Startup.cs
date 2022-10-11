@@ -39,13 +39,14 @@ namespace ECommerce
 
             services.AddDbContext<MyDbContext>(
             option => option.UseSqlServer(Configuration.GetConnectionString("con"),b => b.MigrationsAssembly("ECommerce"))
-            .LogTo(s => Console.WriteLine(s)));
+            );
             services.AddScoped<IImageHandler, ImageHandler>();
             services.AddScoped<GenericRepository<User>,UserRepository>();
             services.AddScoped<GenericRepository<InfraStructure.Entity.Type>,TypeRepository>();
             services.AddScoped<GenericRepository<Category>,CategoryRepository>();
             services.AddScoped<GenericRepository<Product>,ProductRepository>();
             services.AddScoped<ProductRepository>();
+            services.AddScoped<CategoryRepository>();
 
             services.AddScoped<GenericRepository<Color>,ColorRepository>();
             services.AddScoped<GenericRepository<Size>,SizeRepository>();

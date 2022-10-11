@@ -35,8 +35,6 @@ namespace ECommerce.Controllers
         public IActionResult CreateProduct()
         {
             ViewData["categories"] = new SelectList(categoryRepository.GetAll(), "Id", "Name");
-            //ViewData["types"] = new SelectList(typeRepository.GetAll(), "Id", "Name");
-
             return View();
         }
 
@@ -54,15 +52,55 @@ namespace ECommerce.Controllers
             if (ModelState.IsValid)
             {
                 var product = mapper.Map<Product>(productViewModel);
-                productRepository.AddProduct(product,productViewModel.File);
-                typeRepository.SaveChanges();
+                var savedProduct = productRepository.AddProduct(product, productViewModel.File);
+                productRepository.SaveChanges();
+
+                foreach (var colorname in productViewModel.MyColor)
+                {
+                var color = new Color();
+                    color.IdProduct = savedProduct.Id;
+                    color.Name = colorname; 
+                    colorRepository.Add(color);
+                    colorRepository.SaveChanges();
+                }
+
+                foreach (var sizename in productViewModel.MySize)
+                {
+                var size = new Size();
+                    size.IdProduct = savedProduct.Id;
+                    size.Name = sizename;
+                    sizeRepository.Add(size);
+                    sizeRepository.SaveChanges();
+                }
+                return View();
             }
-                return View(productViewModel);
+            return View(productViewModel);
         }
+
         [HttpPost]
-    
+        public IActionResult UpdateProduct(ProductViewModel productViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var product = mapper.Map<Product>(productViewModel);
+                var savedProduct = productRepository.Update(product);
+                productRepository.SaveChanges();
+                return View();
+            }
+            return View(productViewModel);
+        }
 
+        [HttpPost]
+        public IActionResult DeleteProduct(int id)
+        {
+            var tempProduct = new Product();
+            tempProduct.Id = id;
+            productRepository.Delete(tempProduct);
+            productRepository.SaveChanges();
+            return View();
+        }
 
+        [HttpPost]
         public IActionResult CreateType()
         {
             return View();
@@ -75,6 +113,28 @@ namespace ECommerce.Controllers
             {
                 var type = mapper.Map<Type>(typeiewModel);
                 typeRepository.Add(type);
+                typeRepository.SaveChanges();
+            }
+            return View(typeiewModel);
+        }
+        [HttpPost]
+        public IActionResult UpdateType(TypeViewModel typeiewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var type = mapper.Map<Type>(typeiewModel);
+                typeRepository.Update(type);
+                typeRepository.SaveChanges();
+            }
+            return View(typeiewModel);
+        }
+        [HttpPost]
+        public IActionResult DeleteType(TypeViewModel typeiewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var type = mapper.Map<Type>(typeiewModel);
+                typeRepository.Delete(type);
                 typeRepository.SaveChanges();
             }
             return View(typeiewModel);

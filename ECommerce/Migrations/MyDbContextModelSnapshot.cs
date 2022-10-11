@@ -51,6 +51,14 @@ namespace ECommerce.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -63,7 +71,9 @@ namespace ECommerce.Migrations
             modelBuilder.Entity("InfraStructure.Entity.Color", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("IdProduct")
                         .HasColumnType("int");
@@ -138,7 +148,9 @@ namespace ECommerce.Migrations
             modelBuilder.Entity("InfraStructure.Entity.Size", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("IdProduct")
                         .HasColumnType("int");
@@ -408,7 +420,8 @@ namespace ECommerce.Migrations
 
                     b.HasOne("InfraStructure.Entity.User", "User")
                         .WithMany("CartItems")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Product");
 
@@ -456,7 +469,7 @@ namespace ECommerce.Migrations
                     b.HasOne("InfraStructure.Entity.Type", "Type")
                         .WithMany("Products")
                         .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -479,7 +492,8 @@ namespace ECommerce.Migrations
                 {
                     b.HasOne("InfraStructure.Entity.Category", "Category")
                         .WithMany("Types")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Category");
                 });

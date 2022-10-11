@@ -19,5 +19,10 @@
   <ItemGroup>
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Shop\Partial\" />
+    <Folder Include="wwwroot\Files\Imgs\Category\" />
+  </ItemGroup>
              
 </Project>

@@ -7,40 +7,55 @@ namespace BusinessLogic.Utils
 {
     public class ImageHandler : IImageHandler
     {
-
-
-        private readonly IHostingEnvironment webHostEnvironment;
-        public ImageHandler(IHostingEnvironment webhost)
+        public string RemoveImage(string imgPath)
         {
-            webHostEnvironment = webhost;
-        }
-        public void RemoveImage(string imgPath)
-        {
-            string image = Path.Combine(webHostEnvironment.WebRootPath, "images", imgPath);
-            FileInfo fi = new FileInfo(image);
-            if (fi != null)
+            try
             {
-                System.IO.File.Delete(image);
-                fi.Delete();
-            }
-        }
-
-        public string UploadImage(IFormFile imageFile)
-        {
-            string uniqueFileName = null;
-
-            if (imageFile != null)
-            {
-                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                string DeletedPath = Directory.GetCurrentDirectory() + Constants.LOCAL_PATH + imgPath;
+                if (System.IO.File.Exists(DeletedPath))
                 {
-                    imageFile.CopyTo(fileStream);
+                    System.IO.File.Delete(DeletedPath);
                 }
+                return  "Deleted";
             }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
 
-            return uniqueFileName;
+        public string UploadImage(IFormFile imageFile,string path)
+        {
+
+            try
+            {
+                // 1 ) Get Directory
+                string FilePath = Directory.GetCurrentDirectory() + Constants.LOCAL_PATH + path;
+
+
+                //2) Get File Name
+                string FileName = Guid.NewGuid() + Path.GetFileName(imageFile.FileName);
+
+
+                // 3) Merge Path with File Name
+                string FinalPath = Path.Combine(FilePath, FileName);
+
+
+                //4) Save File As Streams "Data Overtime"
+
+                using (var Stream = new FileStream(FinalPath, FileMode.Create))
+                {
+                    imageFile.CopyTo(Stream);
+                }
+
+
+                return FileName;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
     }
 }

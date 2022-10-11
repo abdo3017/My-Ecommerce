@@ -16,12 +16,16 @@ namespace InfraStructure.Configration
             //relation
             builder.HasKey(b => b.Id);
             builder.HasOne(c => c.User)
-            .WithMany(e => e.CartItems).HasForeignKey(e=>e.UserId);
+            .WithMany(e => e.CartItems).HasForeignKey(e => e.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
 
             builder
             .HasOne(c => c.Product)
             .WithMany(e => e.CartItems)
-            .HasForeignKey(c => c.ProductId);
+            .HasForeignKey(c => c.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
 
 
         }

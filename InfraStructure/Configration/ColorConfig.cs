@@ -17,7 +17,9 @@ namespace InfraStructure.Configration
             builder.HasKey(b =>new { b.Id,b.IdProduct });
             builder
             .HasOne(c => c.Product)
-            .WithMany(e => e.Colors).HasForeignKey(c => c.IdProduct);
+            .WithMany(e => e.Colors).HasForeignKey(c => c.IdProduct)
+            .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

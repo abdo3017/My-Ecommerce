@@ -31,12 +31,12 @@ namespace BusinessLogic.Services
                 .Where(predicate).ToList();
         }
 
-        public T GetById(int id)
+        public virtual T GetById(int id)
         {
             return Context.Find<T>(id);
         }
 
-        public IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
             return Context.Set<T>()
                 .ToList();
@@ -64,5 +64,7 @@ namespace BusinessLogic.Services
         {
              return Context.Set<T>().FirstOrDefault(predicate);
         }
+
+       
     }
 }

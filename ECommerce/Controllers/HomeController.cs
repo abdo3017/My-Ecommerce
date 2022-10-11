@@ -1,5 +1,8 @@
-﻿using ECommerce.Models;
+﻿using AutoMapper;
+using BusinessLogic.Services;
+using ECommerce.Models;
 using ECommerce.ViewModel;
+using InfraStructure.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,22 +17,33 @@ namespace ECommerce.Controllers
 	//[Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IMapper mapper;
+        private readonly CategoryRepository categoryRepository;
+        public CategoryHomeViewModel categoryViewModel { get; set; }   
+        public HomeController(IMapper _mapper, CategoryRepository _categoryRepository)
         {
-            _logger = logger;
+            mapper = _mapper;
+            categoryRepository = _categoryRepository;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var CategoriesDb=categoryRepository.GetAll();
+            var categories = mapper.Map<IEnumerable<CategoryHomeViewModel>>(CategoriesDb);
+            for(int i=0;i<CategoriesDb.Count();i++)
+            {
+                categories.ElementAt(i).ItemCount = CategoriesDb.ElementAt(i).Products.Count();
+            } 
+            return View(categories);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+
+
+
+
+
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
