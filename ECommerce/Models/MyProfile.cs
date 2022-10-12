@@ -22,6 +22,12 @@ namespace ECommerce.Models
 
 			CreateMap<Category, CategoryShopViewModel>();
 			CreateMap<CategoryShopViewModel, Category>();
+
+			CreateMap<Size, Domain.Models.Size>();
+			CreateMap<Domain.Models.Size, Size>();
+
+			CreateMap<Color, Domain.Models.Color>();
+			CreateMap<Domain.Models.Color, Color>();
 		}
 	}
 }

@@ -9,6 +9,5 @@ namespace ECommerce.ViewModel
         public string Name { get; set; }
         public string Description { get; set; }
         public ICollection<Type> Types { get; set; }
-       // public ICollection<Product> Products { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper.Configuration.Annotations;
+using Domain.Models;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,12 +22,10 @@ namespace ECommerce.ViewModel
         public int TypeId { get; set; }
         public int CategoryId { get; set; }
         public string Image { get; set; }
-        [Ignore]
 		[Required]
-        public ICollection<string> MyColor { get; set; }
+        public ICollection<Color> Colors { get; set; }
 		[Required]
-        [Ignore]
-        public ICollection<string> MySize{ get; set; }
+        public ICollection<Size> Sizes{ get; set; }
         [Required,Display(Name = "Upload Image")]
         public IFormFile File { get; set; }
     }

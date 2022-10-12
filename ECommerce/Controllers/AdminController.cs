@@ -47,7 +47,9 @@ namespace ECommerce.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateProduct(ProductViewModel productViewModel)
+        public IActionResult CreateProduct(ProductViewModel productViewModel,
+            List<string> selectedColors,
+            List<string> selectedSizes)
         {
             if (ModelState.IsValid)
             {
@@ -55,7 +57,7 @@ namespace ECommerce.Controllers
                 var savedProduct = productRepository.AddProduct(product, productViewModel.File);
                 productRepository.SaveChanges();
 
-                foreach (var colorname in productViewModel.MyColor)
+                foreach (var colorname in selectedColors)
                 {
                 var color = new Color();
                     color.IdProduct = savedProduct.Id;
@@ -64,7 +66,7 @@ namespace ECommerce.Controllers
                     colorRepository.SaveChanges();
                 }
 
-                foreach (var sizename in productViewModel.MySize)
+                foreach (var sizename in selectedSizes)
                 {
                 var size = new Size();
                     size.IdProduct = savedProduct.Id;
