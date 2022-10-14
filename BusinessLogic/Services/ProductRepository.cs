@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,10 +38,19 @@ namespace BusinessLogic.Services
         {
             return context.Products.Include(p => p.Sizes).Include(p => p.Colors);
         }
+        public override Product GetById(int id)
+        {
+            return context.Products.Include(p => p.Sizes).Include(p => p.Colors)
+                .FirstOrDefault(p => p.Id == id);
+        }
         public IEnumerable<Product> GetByCategory(int categoryId)
         {
             return context.Products.Where(p => p.CategoryId == categoryId)
                 .Include(p => p.Sizes).Include(p => p.Colors);
+        }
+        public IEnumerable<Product> GetRelatedProducts(Expression<Func<Product, bool>> predicate)
+        {
+            return context.Products.Where(predicate);
         }
     }
 }

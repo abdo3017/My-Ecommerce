@@ -1,4 +1,5 @@
-﻿using InfraStructure.Database;
+﻿using BusinessLogic.Utils;
+using InfraStructure.Database;
 using InfraStructure.Entity;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -41,7 +42,7 @@ namespace BusinessLogic.Services
                 user.Id = identity.Id;
                 userRpository.Add(user);
                 userRpository.SaveChanges();
-
+                setCurrentUser(user);
                 //await userManager.AddToRoleAsync(identity, "Client");
                 //create cookie for registeration
                 await signInManager.SignInAsync(identity, user.RememberMe);
@@ -56,7 +57,11 @@ namespace BusinessLogic.Services
             {
                 var result = await signInManager.PasswordSignInAsync(identity, user.Password, user.RememberMe, false);
                 if (result.Succeeded)
+                {
+                    var item = userRpository.FindOne(u => u.Id == identity.Id);
+                    setCurrentUser(item);
                     return null;
+                }
                 return "invalid  Password";
             }
             return "invalid Email ";
@@ -64,6 +69,17 @@ namespace BusinessLogic.Services
         public async void LogOut()
         {
             await signInManager.SignOutAsync();
+        }
+        private void setCurrentUser(User user)
+        {
+            CurrentUser.Instance.user = new Domain.Models.User
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                Password = user.Password,
+                RememberMe = user.RememberMe
+            };
         }
     }
 }

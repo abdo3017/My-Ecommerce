@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Shop\Partial\" />
     <Folder Include="wwwroot\Files\Imgs\Category\" />
   </ItemGroup>
              

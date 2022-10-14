@@ -14,8 +14,6 @@ namespace ECommerce.Controllers
         private readonly CategoryRepository categoryRepository;
         private readonly ProductRepository productRepository;
 
-        public CategoryHomeViewModel categoryViewModel { get; set; }
-        public ProductViewModel productViewModel { get; set; }
         public ShopController(IMapper _mapper, CategoryRepository _categoryRepository, ProductRepository _productRepository)
         {
             mapper = _mapper;

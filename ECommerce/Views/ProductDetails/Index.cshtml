@@ -1,0 +1,139 @@
+﻿@model ECommerce.ViewModel.ProductViewModel
+@{
+	var check = false;
+	if (ViewBag.Category != null)
+		check = true;
+}
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="breadcrumb__links">
+					<a asp-action="Index" asp-controller="Home"><i class="fa fa-home"></i> Home</a>
+					@if (check)
+					{
+						<a asp-action="GetProductsOfCategory" asp-controller="Shop"
+					   asp-route-id="@ViewBag.Category.Id">@ViewBag.Category.Name ’s </a>
+					}
+					else
+					{
+						<a asp-action="Index" asp-controller="Shop">Shop </a>
+					}
+					<span>@Model.Name</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Product Details Section Begin -->
+<section class="product-details spad">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6" style="text-align: center; display: flex;
+				justify-content: center; align-items: center;overflow: hidden;
+				flex-shrink: 0;width: 100%; height: 100%; object-fit: cover;">
+				<img data-hash="product-1" class="product__big__img" src="~/Files/Imgs/Product/@Model.Image">
+			</div>
+			<div class="col-lg-6">
+				<div class="product__details__text">
+					<h3>@Model.Name <span>Brand: @Model.Brand</span></h3>
+					<div class="rating">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<span>( 138 reviews )</span>
+					</div>
+					<div class="product__details__price">$ @Model.Price</div>
+					<p>@Model.Description</p>
+					<div class="product__details__button">
+						<div class="quantity">
+							<span>Quantity:</span>
+							<div class="pro-qty">
+								<input type="text" value="1"
+									   min="1" max="@Model.Quantity" readonly="readonly" name="Quantity">
+							</div>
+						</div>
+						<a href="#" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
+						<ul>
+							<li><a href="#"><span class="icon_heart_alt"></span></a></li>
+						</ul>
+					</div>
+					<div class="product__details__widget">
+						<ul>
+							<li>
+								<span>Availability:</span>
+									<label for="stockin">
+										In Stock
+									</label>
+							
+							</li>
+							<li>
+								<span>Available color:</span>
+								<div class="color__checkbox">
+									@foreach (var item in @Model.Colors)
+									{
+										<label for="@item.Name">
+											<input type="radio" name="color__radio" id="@item.Name">
+											<span class="checkmark @item.Name-bg"></span>
+										</label>
+									}
+								</div>
+							</li>
+							<li>
+								<span>Available size:</span>
+								<div class="size__btn">
+									@foreach (var item in @Model.Sizes)
+									{
+										<label for="@item.Name-btn">
+											<input type="radio" id="@item.Name-btn">
+											@item.Name
+										</label>
+									}
+								</div>
+							</li>
+							<li>
+								<span>Promotions:</span>
+								<p>Free shipping</p>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-12">
+				<div class="product__details__tab">
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab"  role="tab">Description</a>
+						</li>
+
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="tabs-1" role="tabpanel">
+							<p>
+								@Model.Description
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12 text-center">
+				<div class="related__title">
+					<h5>RELATED PRODUCTS</h5>
+				</div>
+			</div>
+			@foreach (var item in ViewBag.relatedproducts)
+			{
+					<partial name="ProductItem" model="@item" view-data="ViewData" />
+			}
+
+
+		</div>
+	</div>
+</section>
+<!-- Product Details Section End -->

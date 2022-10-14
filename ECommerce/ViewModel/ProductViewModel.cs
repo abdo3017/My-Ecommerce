@@ -9,6 +9,7 @@ namespace ECommerce.ViewModel
 {
     public class ProductViewModel
     {
+        public int Id { get; set; }
         [Required, MaxLength(100)]
         public string Name { get; set; }
         [Required]
@@ -28,5 +29,7 @@ namespace ECommerce.ViewModel
         public ICollection<Size> Sizes{ get; set; }
         [Required,Display(Name = "Upload Image")]
         public IFormFile File { get; set; }
+        public bool favourite { get; set; }
+
     }
 }
