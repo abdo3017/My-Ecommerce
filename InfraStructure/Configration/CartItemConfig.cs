@@ -14,7 +14,8 @@ namespace InfraStructure.Configration
         public void Configure(EntityTypeBuilder<CartItem> builder)
         {
             //relation
-            builder.HasKey(b => b.Id);
+           // builder.HasKey(b => b.Id);
+            builder.HasKey(b => new { b.ProductId, b.UserId });
             builder.HasOne(c => c.User)
             .WithMany(e => e.CartItems).HasForeignKey(e => e.UserId)
             .OnDelete(DeleteBehavior.Cascade);

@@ -18,9 +18,9 @@ namespace ECommerce.Controllers
     public class HomeController : Controller
     {
         private readonly IMapper mapper;
-        private readonly CategoryRepository categoryRepository;
+        private readonly GenericRepository<Category> categoryRepository;
         public CategoryHomeViewModel categoryViewModel { get; set; }   
-        public HomeController(IMapper _mapper, CategoryRepository _categoryRepository)
+        public HomeController(IMapper _mapper, GenericRepository<Category> _categoryRepository)
         {
             mapper = _mapper;
             categoryRepository = _categoryRepository;

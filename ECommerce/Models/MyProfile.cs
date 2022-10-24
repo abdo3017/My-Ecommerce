@@ -28,6 +28,9 @@ namespace ECommerce.Models
 
 			CreateMap<Color, Domain.Models.Color>();
 			CreateMap<Domain.Models.Color, Color>();
+
+			CreateMap<CartItem, CartItemViewModel>();
+			CreateMap<CartItemViewModel, CartItem>();
 		}
 	}
 }

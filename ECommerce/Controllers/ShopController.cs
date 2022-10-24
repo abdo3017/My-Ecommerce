@@ -11,10 +11,10 @@ namespace ECommerce.Controllers
     public class ShopController : Controller
     {
         private readonly IMapper mapper;
-        private readonly CategoryRepository categoryRepository;
+        private readonly GenericRepository<Category> categoryRepository;
         private readonly ProductRepository productRepository;
 
-        public ShopController(IMapper _mapper, CategoryRepository _categoryRepository, ProductRepository _productRepository)
+        public ShopController(IMapper _mapper, GenericRepository<Category> _categoryRepository, ProductRepository _productRepository)
         {
             mapper = _mapper;
             categoryRepository = _categoryRepository;

@@ -54,22 +54,20 @@
 							<span>Quantity:</span>
 							<div class="pro-qty">
 								<input type="text" value="1"
-									   min="1" max="@Model.Quantity" readonly="readonly" name="Quantity">
+									   min="1" max="@Model.Quantity" readonly="readonly" name="Quantity" id="Quantity">
 							</div>
 						</div>
-						<a href="#" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
-						<ul>
-							<li><a href="#"><span class="icon_heart_alt"></span></a></li>
-						</ul>
+						<a href="#" onclick="AddToCart()" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
+						<a href="#" onclick="AddToFavourite()" class="cart-btn"><span class="icon_heart_alt"></span> Add to favourite</a>
 					</div>
 					<div class="product__details__widget">
 						<ul>
 							<li>
 								<span>Availability:</span>
-									<label for="stockin">
-										In Stock
-									</label>
-							
+								<label for="stockin">
+									In Stock
+								</label>
+
 							</li>
 							<li>
 								<span>Available color:</span>
@@ -107,9 +105,8 @@
 				<div class="product__details__tab">
 					<ul class="nav nav-tabs" role="tablist">
 						<li class="nav-item">
-							<a class="nav-link active" data-toggle="tab"  role="tab">Description</a>
+							<a class="nav-link active" data-toggle="tab" role="tab">Description</a>
 						</li>
-
 					</ul>
 					<div class="tab-content">
 						<div class="tab-pane active" id="tabs-1" role="tabpanel">
@@ -129,11 +126,65 @@
 			</div>
 			@foreach (var item in ViewBag.relatedproducts)
 			{
-					<partial name="ProductItem" model="@item" view-data="ViewData" />
+				<partial name="ProductItem" model="@item" view-data="ViewData" />
 			}
-
-
 		</div>
+	</div>
+	<div class="message">
+		<div class="success" id="success">added!</div>
+		<div class="danger" id="danger">already added!</div>
 	</div>
 </section>
 <!-- Product Details Section End -->
+@section Scripts {
+	<script type="text/javascript">
+		function AddToCart() {
+			var Quantity = Number(document.getElementById("Quantity").value);
+			var id = @Model.Id;
+			console.log(id);
+			console.log(Quantity);
+			$.ajax({
+				url: "/ProductDetails/AddToShoppingCart",
+				type: "POST",
+				data: {
+					productId: id,
+					quantity: Quantity
+				},
+				success: function(res) {
+					console.log(res);
+					message(res);
+				}
+			});
+		}
+
+		function AddToFavourite() {
+			var id = @Model.Id;
+			$.ajax({
+				url: "/ProductDetails/AddToFavourite",
+				type: "POST",
+				data: {
+					productId: id				},
+				success: function(res) {
+					console.log(res);
+					message(res);
+				}
+			});
+		}
+
+
+		function message(check) {
+
+			//if (check == false)
+			//danger.style.display = 'block';
+			setTimeout(() => {
+			}, 2000);
+			success.style.display = 'block';
+
+			setTimeout(() => {
+				danger.style.display = 'none';
+				success.style.display = 'none';
+			}, 4000);
+		}
+	</script>
+}
+

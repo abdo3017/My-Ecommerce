@@ -50,7 +50,7 @@ namespace ECommerce.Controllers
                 var user = mapper.Map<User>(loginViewModel);
                 var result = accountRepository.LoginAsync(user);
                 if (result.Result == null)
-                    return LocalRedirect(ReturnUrl);
+                    return RedirectToAction("Index", "Home");// LocalRedirect(ReturnUrl);
                 ModelState.AddModelError(string.Empty, result.Result);
             }
             return View(loginViewModel);

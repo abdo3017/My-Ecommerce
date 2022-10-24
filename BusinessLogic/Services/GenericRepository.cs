@@ -23,7 +23,7 @@ namespace BusinessLogic.Services
                 .Entity;
         }
 
-        public IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
+        public virtual IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
         {
           
             return Context.Set<T>()

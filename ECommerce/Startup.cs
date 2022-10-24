@@ -46,8 +46,9 @@ namespace ECommerce
             services.AddScoped<GenericRepository<Category>,CategoryRepository>();
             services.AddScoped<GenericRepository<Product>,ProductRepository>();
             services.AddScoped<ProductRepository>();
-            services.AddScoped<CategoryRepository>();
-
+            //services.AddScoped<CategoryRepository>();
+            services.AddScoped<GenericRepository<FavouriteProduct>, FavouriteProductRepository>();
+            services.AddScoped<GenericRepository<CartItem>, CartProductRepository>();
             services.AddScoped<GenericRepository<Color>,ColorRepository>();
             services.AddScoped<GenericRepository<Size>,SizeRepository>();
             services.AddScoped<AccountRepository>();

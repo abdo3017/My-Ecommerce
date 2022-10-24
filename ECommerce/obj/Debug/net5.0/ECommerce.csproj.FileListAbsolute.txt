@@ -171,3 +171,4 @@ C:\Users\Abdelrahman\source\repos\ECommerce\ECommerce\obj\Debug\net5.0\Razor\Vie
 C:\Users\Abdelrahman\source\repos\ECommerce\ECommerce\obj\Debug\net5.0\Razor\Views\Shared\ProductsContent.cshtml.g.cs
 C:\Users\Abdelrahman\source\repos\ECommerce\ECommerce\obj\Debug\net5.0\Razor\Views\Shared\ProductItem.cshtml.g.cs
 C:\Users\Abdelrahman\source\repos\ECommerce\ECommerce\obj\Debug\net5.0\Razor\Views\ProductDetails\Index.cshtml.g.cs
+C:\Users\Abdelrahman\source\repos\ECommerce\ECommerce\obj\Debug\net5.0\Razor\Views\ShoppingCart\Index.cshtml.g.cs
