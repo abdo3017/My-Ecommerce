@@ -31,6 +31,9 @@ namespace ECommerce.Models
 
 			CreateMap<CartItem, CartItemViewModel>();
 			CreateMap<CartItemViewModel, CartItem>();
+
+			CreateMap<FavouriteProduct, FavouriteProductViewModel>();
+			CreateMap<FavouriteProductViewModel, FavouriteProduct>();
 		}
 	}
 }

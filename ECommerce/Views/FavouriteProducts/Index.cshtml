@@ -1,0 +1,102 @@
+﻿@model IEnumerable<ECommerce.ViewModel.FavouriteProductViewModel>
+
+@{
+}
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="breadcrumb__links">
+					<a asp-action="Index" asp-controller="Home"><i class="fa fa-home"></i> Home</a>
+					<span>Favourite Products</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Breadcrumb End -->
+<!-- favourite products Section Begin -->
+<section class="shop-cart spad">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="shop__cart__table">
+					<table id="cartItemList">
+						<thead>
+							<tr>
+								<th>Product</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in @Model)
+							{
+
+								<tr>
+									<td class="cart__product__item">
+										<img src="~/Files/Imgs/Product/@item.Product.Image" alt="">
+										<div class="cart__product__item__title">
+											<h6>@item.Product.Name</h6>
+											<div class="rating">
+												<i class="fa fa-star"></i>
+												<i class="fa fa-star"></i>
+												<i class="fa fa-star"></i>
+												<i class="fa fa-star"></i>
+												<i class="fa fa-star"></i>
+											</div>
+										</div>
+										<div class="cart__price" style="width:100%;">
+											<span>$ @item.Product.Price</span>
+										</div>
+									</td>
+									<td>
+										<div class="cart__close" onclick="remove(this,@item.IdProduct)">
+											<span class="icon_close"></span>
+										</div>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6 col-md-6 col-sm-6">
+				<div class="cart__btn">
+					<a asp-action="Index" asp-controller="Shop">Continue Shopping</a>
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-6">
+				<div class="cart__btn update__btn">
+					<a asp-action="RemoveAllFromFavouritePage" asp-controller="FavouriteProducts" class="btn-outline-danger">
+						<span class="text-dark fa fa-trash"></span>
+						remove all
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- favourite products Section End -->
+@section Scripts {
+	<script type="text/javascript">
+
+		function remove(btn, ProductId) {
+			var row = btn.parentNode.parentNode;
+			console.log(row);
+			row.parentNode.removeChild(row);
+			$.ajax({
+				url: "/FavouriteProducts/RemoveFromFavouritePage",
+				type: "POST",
+				data: { productId: ProductId },
+				success: function(res) {
+					console.log(res);
+				}
+			});
+		}
+		
+	</script>
+}
+

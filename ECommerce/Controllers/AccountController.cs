@@ -42,17 +42,19 @@ namespace ECommerce.Controllers
             return View();
         }
         [HttpPost]
-		public IActionResult LogIn(LoginViewModel loginViewModel)
+        public IActionResult LogIn(LoginViewModel loginViewModel, [FromQuery] string ReturnUrl = "~/Home/Index")
         {
-			var ReturnUrl = TempData["ReturnUrl"].ToString();
-			if (ModelState.IsValid)
+            if(TempData["ReturnUrl"]!=null)
+             ReturnUrl = TempData["ReturnUrl"].ToString();
+            if (ModelState.IsValid)
             {
                 var user = mapper.Map<User>(loginViewModel);
                 var result = accountRepository.LoginAsync(user);
                 if (result.Result == null)
-                    return RedirectToAction("Index", "Home");// LocalRedirect(ReturnUrl);
+                    return LocalRedirect(ReturnUrl);
                 ModelState.AddModelError(string.Empty, result.Result);
             }
+            TempData["ReturnUrl"] = ReturnUrl;
             return View(loginViewModel);
         }
         public IActionResult LogOut()

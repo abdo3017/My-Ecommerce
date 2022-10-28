@@ -15,12 +15,12 @@ namespace ECommerce.Controllers
         private readonly IMapper mapper;
         private readonly GenericRepository<Category> categoryRepository;
         private readonly ProductRepository productRepository;
-        private readonly GenericRepository<CartItem> shoppingCartRepository;
-        private readonly GenericRepository<FavouriteProduct> favouriteProductRepository;
+        private readonly CartProductRepository shoppingCartRepository;
+        private readonly FavouriteProductRepository favouriteProductRepository;
 
 		public ProductDetailsController(IMapper _mapper, GenericRepository<Category> _categoryRepository,
-			ProductRepository _productRepository, GenericRepository<CartItem> _shoppingCartRepository,
-            GenericRepository<FavouriteProduct> _favouriteProductRepository)
+			ProductRepository _productRepository, CartProductRepository _shoppingCartRepository,
+            FavouriteProductRepository _favouriteProductRepository)
 		{
 			mapper = _mapper;
 			categoryRepository = _categoryRepository;

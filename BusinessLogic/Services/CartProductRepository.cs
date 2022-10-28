@@ -17,10 +17,18 @@ namespace BusinessLogic.Services
         {
             context = _Context;
         }
-        
-		public override IEnumerable<CartItem> Find(Expression<Func<CartItem, bool>> predicate)
-		{
+
+        public override IEnumerable<CartItem> Find(Expression<Func<CartItem, bool>> predicate)
+        {
             return context.CartItems.Where(predicate).Include(c => c.Product);
         }
-	}
+        public void Delete(Expression<Func<CartItem, bool>> predicate)
+        {
+            var CartItems = context.CartItems.Where(predicate);
+            foreach (var item in CartItems)
+            {
+                base.Delete(item);
+            }
+        }
+    }
 }

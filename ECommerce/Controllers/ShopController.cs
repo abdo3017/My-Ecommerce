@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using BusinessLogic.Services;
+using BusinessLogic.Utils;
 using ECommerce.ViewModel;
 using InfraStructure.Entity;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,12 +15,18 @@ namespace ECommerce.Controllers
         private readonly IMapper mapper;
         private readonly GenericRepository<Category> categoryRepository;
         private readonly ProductRepository productRepository;
-
-        public ShopController(IMapper _mapper, GenericRepository<Category> _categoryRepository, ProductRepository _productRepository)
+        private readonly CartProductRepository shoppingCartRepository;
+        private readonly FavouriteProductRepository favouriteProductRepository;
+        public ShopController(IMapper _mapper,
+            GenericRepository<Category> _categoryRepository,
+            ProductRepository _productRepository,
+            CartProductRepository _shoppingCartRepository, FavouriteProductRepository _favouriteProductRepository)
         {
             mapper = _mapper;
             categoryRepository = _categoryRepository;
             productRepository = _productRepository;
+            shoppingCartRepository = _shoppingCartRepository;
+            favouriteProductRepository = _favouriteProductRepository;
         }
         public IActionResult Index()
         {
@@ -71,6 +79,40 @@ namespace ECommerce.Controllers
             ViewData["products"] = filterdProducts;
             return PartialView("ProductsContent", filterdProducts);
         }
-
+        [HttpPost]
+        public JsonResult AddToShoppingCart(int productId, int quantity)
+        {
+            var cartItem = new CartItem();
+            cartItem.ProductId = productId;
+            cartItem.Quantity = quantity;
+            cartItem.UserId = CurrentUser.Instance.user.Id;
+            var data = shoppingCartRepository.Add(cartItem);
+            try
+            {
+                shoppingCartRepository.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                return Json(false);
+            }
+            return Json(true);
+        }
+        [HttpPost]
+        public JsonResult AddToFavourite(int productId)
+        {
+            var item = new FavouriteProduct();
+            item.IdProduct = productId;
+            item.IdUser = CurrentUser.Instance.user.Id;
+            var data = favouriteProductRepository.Add(item);
+            try
+            {
+                favouriteProductRepository.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                return Json(false);
+            }
+            return Json(true);
+        }
     }
 }

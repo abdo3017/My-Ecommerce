@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<ECommerce.ViewModel.CartItemViewModel>
 
 @{
+	var total = 0;
 }
 
 <!-- Breadcrumb Begin -->
@@ -37,6 +38,7 @@
 							@foreach (var item in @Model)
 							{
 								var price = @item.Quantity * @item.Product.Price;
+								total += (int)price;
 								<tr>
 									<td class="cart__product__item">
 										<img src="~/Files/Imgs/Product/@item.Product.Image" alt="">
@@ -51,21 +53,28 @@
 											</div>
 										</div>
 									</td>
-									<td class="cart__price">$ @item.Product.Price</td>
-									<td style="display:none;">@item.ProductId</td>
-									<td style="display:none;">@item.UserId</td>
 
+									<td class="cart__price">
+										<span>$ </span>
+										<span>@item.Product.Price</span>
+									</td>
 									<td class="cart__quantity">
-										<div class="pro-qty">
-											<input type="text" value="@item.Quantity"
-											   min="1" max="@item.Product.Quantity" readonly="readonly" name="Quantity" id="Quantity">
+										<div>
+											<span class="btn btn-sm" onclick="decrease(this,@item.Product.Quantity,@item.ProductId)"> <i class="fa fa-xs fa-minus"></i> </span>
+											<span id="Quantity" class="h5">@item.Quantity</span>
+											<span class="btn btn-sm" onclick="increase(this,@item.Product.Quantity,@item.ProductId)"> <i class="fa fa-xs fa-plus"></i> </span>
 										</div>
 									</td>
 
 									<td class="cart__total">
-										$ @price
+										<span>$ </span>
+										<span>@price</span>
 									</td>
-									<td class="cart__close" onclick="delete(this,@item.ProductId)"><span class="icon_close"></span></td>
+									<td>
+										<div class="cart__close" onclick="remove(this,@item.ProductId)">
+											<span class="icon_close"></span>
+										</div>
+									</td>
 								</tr>
 							}
 						</tbody>
@@ -81,26 +90,20 @@
 			</div>
 			<div class="col-lg-6 col-md-6 col-sm-6">
 				<div class="cart__btn update__btn">
-					<a href="#" onclick="update()"><span class="icon_loading"></span> Update cart</a>
+					<a  asp-action="RemoveAllFromShoppingCart" asp-controller="ShoppingCart" class="btn-outline-danger">
+						<span class="text-dark fa fa-trash"></span>
+						remove all
+					</a>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-lg-6">
-				<div class="discount__content">
-					<h6>Discount codes</h6>
-					<form action="#">
-						<input type="text" placeholder="Enter your coupon code">
-						<button type="submit" class="site-btn">Apply</button>
-					</form>
-				</div>
-			</div>
+			<div class="col-lg-6"></div>
 			<div class="col-lg-4 offset-lg-2">
 				<div class="cart__total__procced">
 					<h6>Cart total</h6>
 					<ul>
-						<li>Subtotal <span>$ 750.0</span></li>
-						<li>Total <span>$ 750.0</span></li>
+						<li>Total <span>$</span><span id="total">@total</span></li>
 					</ul>
 					<a href="#" class="primary-btn">Proceed to checkout</a>
 				</div>
@@ -111,29 +114,63 @@
 <!-- Shop Cart Section End -->
 @section Scripts {
 	<script type="text/javascript">
-		function delete (btn, productId){
+
+		function remove(btn, ProductId) {
 			var row = btn.parentNode.parentNode;
+			console.log(row);
 			row.parentNode.removeChild(row);
 			$.ajax({
 				url: "/ShoppingCart/RemoveFromShoppingCart",
 				type: "POST",
-				data: { productId: productId },
+				data: { productId: ProductId },
 				success: function(res) {
 					console.log(res);
 				}
 			});
 		}
-		function update() {
-			var cartitems = new Array();
-			$("#cartItemList TBODY TR").each(function() {
-				var row = $(this);
-                console.log(row.find("TD").eq(0).html());
-				//var cartitem = {};
-				//cartitem.Quantity = row.find("TD").eq(0).html();
-				//cartitem.Country = row.find("TD").eq(1).html();
-				//cartitems.push(customer);
+		function update(ProductQuantity, ProductId) {
+			$.ajax({
+				url: "/ShoppingCart/UpdateShoppingCart",
+				type: "POST",
+				data: {
+					productId: ProductId,
+					productQuantity: ProductQuantity
+				},
+				success: function(res) {
+					console.log(res);
+				}
 			});
+		}
+		function decrease(btn, productQuantity, productId) {
+			var row = btn.parentNode.parentNode.parentNode;
+			var quantity = Number(row.cells[2].childNodes[1].children[1].innerHTML);
+			if (quantity > 1) {
+				var price = Number(row.cells[1].childNodes[3].innerHTML);
+				quantity--;
+				var totalPrice = quantity * price;
+				var total = Number(document.getElementById("total").innerHTML);
+				total -= price;
+				document.getElementById("total").innerHTML = total;
+				row.cells[3].childNodes[3].innerHTML = totalPrice;
+				row.cells[2].childNodes[1].children[1].innerHTML = quantity;
+				update(quantity, Number(productId));
+			}
 
+		}
+		function increase(btn, productQuantity, productId) {
+			var row = btn.parentNode.parentNode.parentNode;
+			var quantity = Number(row.cells[2].childNodes[1].children[1].innerHTML);
+			if (quantity < productQuantity) {
+				var price = Number(row.cells[1].childNodes[3].innerHTML);
+				quantity++;
+				var totalPrice = quantity * price;
+				var total = Number(document.getElementById("total").innerHTML);
+				total += price;
+				document.getElementById("total").innerHTML = total;
+				row.cells[3].childNodes[3].innerHTML = totalPrice;
+				row.cells[2].childNodes[1].children[1].innerHTML = quantity;
+				update(quantity, Number(productId));
+			}
 		}
 	</script>
 }

@@ -182,47 +182,36 @@
 	</div>
 </section>
 <!-- Shop Section End -->
-@section Scripts {
-<script type="text/javascript">
-	function GetProductsOfType(CategoryId, TypeId) {
-		$.ajax({
-			url: "/Shop/GetProductsOfType",
-			data: {
-				categoryId: CategoryId,
-				typeId: TypeId
-			},
-			success: function(result) {
-				$("#content").html(result);
-			},
-			error: function(error) { console.log(error); }
-		});
-	}
-	function filter() {
-		var maxPrice = Number(($("#maxamount").val()).slice(1));
-		var minPrice = Number(($("#minamount").val()).slice(1));
-		var arrColor = new Array();
-		$("input:checkbox[name=colorfilter]:checked").each(function() {
-			arrColor.push($(this).val());
-		});
+<script src="~/js/shop.js"> </script>
 
-		var arrSize = new Array();
-		$("input:checkbox[name=sizefilter]:checked").each(function() {
-			arrSize.push($(this).val());
-		});
-		console.log(arrSize);
-		console.log(arrColor.length);
-		var productList = @Json.Serialize(ViewData["products"]);
-		$.post('@Url.Action("GetFilteredProducts","Shop")', {
-			products: productList,
-			MaxPrice: maxPrice,
-			MinPrice: minPrice,
-			colors: arrColor,
-			sizes: arrSize
-		},
-			function(result) {
-				console.log(result);
-				$("#content").html(result);
+@section Scripts {
+	<script type="text/javascript" >
+		function filter() {
+			var maxPrice = Number(($("#maxamount").val()).slice(1));
+			var minPrice = Number(($("#minamount").val()).slice(1));
+			var arrColor = new Array();
+			$("input:checkbox[name=colorfilter]:checked").each(function() {
+				arrColor.push($(this).val());
 			});
-	}
-</script>
+
+			var arrSize = new Array();
+			$("input:checkbox[name=sizefilter]:checked").each(function() {
+				arrSize.push($(this).val());
+			});
+			console.log(arrSize);
+			console.log(arrColor.length);
+			var productList = @Json.Serialize(ViewData["products"]);
+			$.post('@Url.Action("GetFilteredProducts","Shop")', {
+				products: productList,
+				MaxPrice: maxPrice,
+				MinPrice: minPrice,
+				colors: arrColor,
+				sizes: arrSize
+			},
+				function(result) {
+					console.log(result);
+					$("#content").html(result);
+				});
+		}
+	</script>
 }

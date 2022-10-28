@@ -47,8 +47,8 @@ namespace ECommerce
             services.AddScoped<GenericRepository<Product>,ProductRepository>();
             services.AddScoped<ProductRepository>();
             //services.AddScoped<CategoryRepository>();
-            services.AddScoped<GenericRepository<FavouriteProduct>, FavouriteProductRepository>();
-            services.AddScoped<GenericRepository<CartItem>, CartProductRepository>();
+            services.AddScoped<CartProductRepository>();
+            services.AddScoped<FavouriteProductRepository>();
             services.AddScoped<GenericRepository<Color>,ColorRepository>();
             services.AddScoped<GenericRepository<Size>,SizeRepository>();
             services.AddScoped<AccountRepository>();
@@ -85,7 +85,7 @@ namespace ECommerce
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}");
+                    pattern: "{controller=Account}/{action=Login}");
             });
         }
     }
